@@ -6,7 +6,6 @@
 \<img width="1072" alt="map-7" src="https://user-images.githubusercontent.com/112721395/231794697-b9f0cdbb-41ec-4c25-b193-59273d8a0b44.png">
 <img width="1072" alt="map-6" src="https://user-images.githubusercontent.com/112721395/231794702-ee9d13d6-9c9f-4456-aae9-ad94a06c7389.png">
 
-https://user-images.githubusercontent.com/112721395/231796072-8666f417-3062-400f-9beb-485919162627.mov
 
 
 
