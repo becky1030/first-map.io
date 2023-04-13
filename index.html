@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Display a web map using an alternate projection</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css">
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* make sure this div has a dimension like line 13 */
+        #map {
+            width: 100%;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        #container {
+            display: flex;
+            height: 100%;
+            background-image: linear-gradient(180deg, brown, black);
+        }
+
+        #sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            height: 100%;
+            padding: 30px;
+        }
+
+        /* button {
+            display: block;
+            margin-bottom: 15px;
+        } */
+
+        .button-33 {
+            display: block;
+            margin-bottom: 15px;
+            border-radius: 100px;
+            background-color: rgb(0, 0, 121);
+
+            box-shadow: rgba(201, 56, 20, 0.2) 0 -25px 18px -14px inset, rgba(118, 54, 15, 0.15) 0 1px 2px, rgba(111, 48, 21, 0.15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+            color: rgb(150, 46, 15);
+            cursor: pointer;
+            display: inline-block;
+            font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+            padding: 7px 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 250ms;
+            border: 0;
+            font-size: 16px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-33:hover {
+            box-shadow: rgba(103, 51, 21, 0.35) 0 -25px 18px -14px inset, rgba(116, 66, 23, 0.25) 0 1px 2px, rgba(96, 29, 7, 0.25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+            transform: scale(1.05) rotate(-1deg);
+        }
+
+        /* <!-- HTML !-->
+<button class="button-33" role="button">Button 33</button> */
+
+        /* CSS */
+        /* .button-33 {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-33:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+} */
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <button class="button-33" id="fly-to-coney" role="button">Fly to Coney Island</button>
+            <button class="button-33" id="fit-to-queens" role="button">Fit to Queens</button>
+            <button class="button-33" id="reset-view" role="button">Reset</button>
+            <button class="button-33" id="toggle-borough-boundaries" role="button">Toggle Borough Boundaries</button>
+
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script>
+
+        const INITIAL_CENTER = [-73.971654, 40.773303]
+        const INITIAL_ZOOM = 9
+
+        // TO MAKE THE MAP APPEAR YOU MUST
+        // ADD YOUR ACCESS TOKEN FROM
+        // https://account.mapbox.com
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYmVja3l5eXl5IiwiYSI6ImNsZWV2azM0bTBiN2k0NG12cnEybml0am0ifQ.pTk0bhJgKynBeJMf1r8N3A';
+        const map = new mapboxgl.Map({
+
+            // where do you want to place the map, go find an empty div that has a id of map
+            container: 'map',
+
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/beckyyyyy/clged29im00my01o24vweck6b',
+            center: INITIAL_CENTER, //longitude, latitude
+            //bboxfinder.com to see the coordinates
+            zoom: INITIAL_ZOOM,
+            projection: 'globe' // starting projection, when lower than zoom6, it will go back to the earth
+        });
+
+        // Add the control to the map.
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl
+            })
+        );
+
+
+        const boroughs = [
+            {
+                name: 'Brooklyn',
+                color: 'blue',
+                lngLat: [-73.948230, 40.653246]
+            },
+            {
+                name: 'Manhattan',
+                color: 'blue',
+                lngLat: [-73.987150, 40.756776]
+            },
+            {
+                name: 'Queens',
+                color: 'blue',
+                lngLat: [-73.540418, 41.039891]
+            },
+            {
+                name: 'Stamford',
+                color: 'blue',
+                lngLat: [-73.968815, 40.641509]
+            },
+            {
+                name: 'Huntington',
+                color: 'blue',
+                lngLat: [-73.433462, 40.866978]
+            }
+        ]
+
+        boroughs.forEach(({ name, color, lngLat }) => {
+            const popup = new mapboxgl.Popup({ offset: 25 }).setText(name);
+
+            new mapboxgl.Marker({
+                color,
+                scale: 0.6
+            })
+                .setLngLat(lngLat)
+                .setPopup(popup)
+                .addTo(map);
+        })
+
+
+
+        // create the popup
+        // const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        // 'Central Park'
+        // );
+
+        //add a marker in Central Park, these markers are just html elements
+        //+ctrl key to see dynamic angles
+        // new mapboxgl.Marker({
+        //     color: '#57f17d', //you have to use this comma??
+        //     scale: 0.6
+        // })
+        //     .setLngLat([-73.975676, 40.768620])
+        //     .setPopup(popup)
+        //     .addTo(map);
+
+        map.on('load', () => {
+            map.setFog({});
+
+
+            //add a source and layers for the NYC borough boundaries
+            map.addSource('borough-boundaries', {
+                type: 'geojson',
+                data: 'data/borough-boundaries.geojson',
+                promoteId: 'boro_code'
+
+            })
+
+            map.addLayer({
+                id: 'borough-boundaries-fill',
+                type: 'fill',
+                source: 'borough-boundaries',
+                paint: {
+                    'fill-color': [
+                        'match',
+                        ['get', 'boro_code'],
+                        1,
+                        '#EC5D16',
+                        2,
+                        '#90380C',
+                        3,
+                        '#FF5500',
+                        4,
+                        '#E88A5B',
+                        5,
+                        '#491D07',
+                        'steelblue',
+                    ],
+                    'fill-opacity': [
+                        'case',
+                        ['boolean', ['feature-state', 'hover'], false],
+                        1,
+                        0.5
+                    ]
+                },
+                layout: {
+                    visibility: 'visible'
+                }
+
+            })
+
+            map.addLayer({
+                id: 'borough-boundaries-line',
+                type: 'line',
+                source: 'borough-boundaries',
+                paint: {
+                    'line-color': 'blue',
+                    'line-width': 1,
+                    'line-opacity': 0.7,
+                }
+            })
+
+            map.on('click', (e) => {
+                const [selectedBorough] = map.queryRenderedFeatures(e.point, {
+                    layers: ['borough-boundaries-fill']
+                });
+
+                if (selectedBorough) {
+                    const { boro_name, pop2020 } = selectedBorough.properties
+                    alert(`The population of ${boro_name} is ${pop2020}`)
+                }
+            })
+
+            let hoveredStateId = null
+
+            map.on('mousemove', 'borough-boundaries-fill', (e) => {
+                if (e.features.length > 0) {
+                    if (hoveredStateId !== null) {
+                        map.setFeatureState(
+                            { source: 'borough-boundaries', id: hoveredStateId },
+                            { hover: false }
+                        );
+                    }
+                    hoveredStateId = e.features[0].id;
+                    map.setFeatureState(
+                        { source: 'borough-boundaries', id: hoveredStateId },
+                        { hover: true }
+                    );
+                }
+            });
+        });
+
+        //fly to coney island
+        document.querySelector('#fly-to-coney').addEventListener('click', () => {
+            map.flyTo({
+                center: [-73.983047, 40.577214],
+                zoom: 15,
+                pitch: 45
+            })
+        })
+
+        //reset the map view
+        document.querySelector('#reset-view').addEventListener('click', () => {
+            map.flyTo({
+                center: INITIAL_CENTER,
+                zoom: INITIAL_ZOOM,
+                pitch: 0
+            })
+        })
+
+        //fly to Queens
+        document.querySelector('#fit-to-queens').addEventListener('click', () => {
+            map.fitBounds([
+                [-73.966776, 40.645305],
+                [-73.805503, 40.803309]
+            ]);
+        })
+
+        //toggle borough boundaries
+        document.querySelector('#toggle-borough-boundaries').addEventListener('click', () => {
+            const isVisible = map.getLayoutProperty('borough-boundaries-fill', 'visibility') === 'visible'
+            if (isVisible) {
+                map.setLayoutProperty('borough-boundaries-fill', 'visibility', 'none')
+                map.setLayoutProperty('borough-boundaries-line', 'visibility', 'none')
+
+            } else {
+                map.setLayoutProperty('borough-boundaries-fill', 'visibility', 'visible')
+                map.setLayoutProperty('borough-boundaries-line', 'visibility', 'visible')
+
+            }
+        })
+
+
+    </script>
+
+</body>
+
+</html>
