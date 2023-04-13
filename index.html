@@ -13,6 +13,10 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@600&display=swap" rel="stylesheet">
+
     <style>
         html,
         body {
@@ -46,22 +50,24 @@
             margin-bottom: 15px;
         } */
 
+
+
         .button-33 {
             display: block;
             margin-bottom: 15px;
-            border-radius: 100px;
-            background-color: rgb(0, 0, 121);
-
+            border-radius: 5px;
+            border-width: thin;
+            border-color: blue;
+            background-color: brown;
             box-shadow: rgba(201, 56, 20, 0.2) 0 -25px 18px -14px inset, rgba(118, 54, 15, 0.15) 0 1px 2px, rgba(111, 48, 21, 0.15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
-            color: rgb(150, 46, 15);
+            color: blue;
             cursor: pointer;
             display: inline-block;
-            font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+            font-family: 'Chivo Mono', monospace;
             padding: 7px 20px;
             text-align: center;
             text-decoration: none;
             transition: all 250ms;
-            border: 0;
             font-size: 16px;
             user-select: none;
             -webkit-user-select: none;
@@ -73,33 +79,16 @@
             transform: scale(1.05) rotate(-1deg);
         }
 
-        /* <!-- HTML !-->
-<button class="button-33" role="button">Button 33</button> */
+        h1 {
+            font-family: 'Chivo Mono', monospace;
+            font-size: 60px;
+            color: rgb(4, 4, 154);
+            display: inline-block;
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
 
-        /* CSS */
-        /* .button-33 {
-  background-color: #c2fbd7;
-  border-radius: 100px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: green;
-  cursor: pointer;
-  display: inline-block;
-  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-  padding: 7px 20px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 250ms;
-  border: 0;
-  font-size: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button-33:hover {
-  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
-  transform: scale(1.05) rotate(-1deg);
-} */
+        }
     </style>
 </head>
 
@@ -107,13 +96,22 @@
     <div id="container">
         <div id="sidebar">
             <button class="button-33" id="fly-to-coney" role="button">Fly to Coney Island</button>
+            <button class="button-33" id="fly-to-nyu" role="button">Fly to NYU</button>
+            <button class="button-33" id="fly-to-empire-state-building" role="button">Fly to Empire State
+                Building</button>
+
+
             <button class="button-33" id="fit-to-queens" role="button">Fit to Queens</button>
+            <button class="button-33" id="fit-to-brooklyn" role="button">Fit to Brooklyn</button>
+
             <button class="button-33" id="reset-view" role="button">Reset</button>
             <button class="button-33" id="toggle-borough-boundaries" role="button">Toggle Borough Boundaries</button>
 
+            <h1>NYC Bourough Map</h1>
         </div>
         <div id="map"></div>
     </div>
+
 
     <script>
 
@@ -298,6 +296,26 @@
             })
         })
 
+        //fly to NYU
+        document.querySelector('#fly-to-nyu').addEventListener('click', () => {
+            map.flyTo({
+                center: [-73.997313, 40.729467],
+                zoom: 15,
+                pitch: 45
+            })
+        })
+
+        //fly to Empire State Building
+        document.querySelector('#fly-to-empire-state-building').addEventListener('click', () => {
+            map.flyTo({
+                center: [-73.98564294232736, 40.74910699110041],
+                zoom: 15,
+                pitch: 45
+            })
+        })
+
+
+
         //reset the map view
         document.querySelector('#reset-view').addEventListener('click', () => {
             map.flyTo({
@@ -312,6 +330,13 @@
             map.fitBounds([
                 [-73.966776, 40.645305],
                 [-73.805503, 40.803309]
+            ]);
+        })
+
+        document.querySelector('#fit-to-brooklyn').addEventListener('click', () => {
+            map.fitBounds([
+                [-73.973552, 40.594827],
+                [-73.921069, 40.700486]
             ]);
         })
 
