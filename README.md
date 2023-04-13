@@ -2,7 +2,8 @@
  First interactive map of NYC borough using 
  [mapbox](https://www.mapbox.com)
  
- https://user-images.githubusercontent.com/112721395/231809829-eb463d65-128f-402e-aee0-cc267a774030.mov
+https://user-images.githubusercontent.com/112721395/231811232-8223a057-634e-414f-b986-d97a3392a407.mov
+
 
 <img width="1432" alt="map-8" src="https://user-images.githubusercontent.com/112721395/231794684-f42f4401-f126-499b-a762-08046d15e185.png">
 <img width="981" alt="map-5" src="https://user-images.githubusercontent.com/112721395/231793827-908afbcf-7c81-4456-8d32-47d80c8a11ce.png">
