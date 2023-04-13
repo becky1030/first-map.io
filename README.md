@@ -1,9 +1,11 @@
 # first-map
  First interactive map of NYC borough using 
  [mapbox](https://www.mapbox.com)
- 
- 
-<img width="1320" alt="map-1" src="https://user-images.githubusercontent.com/112721395/231629041-7d044f58-e60a-44a8-a413-20b36e1b7d80.png">
-<img width="492" alt="map-2" src="https://user-images.githubusercontent.com/112721395/231629217-8e550449-c09a-41fa-881d-8906b83d8339.png">
-<img width="492" alt="map-3" src="https://user-images.githubusercontent.com/112721395/231629220-e4ee1bb5-cbc8-4046-80e6-6224d3aaf858.png">
-<img width="492" alt="map-4" src="https://user-images.githubusercontent.com/112721395/231629221-4d1fddaa-449a-45ec-b579-e1d3f6ae36d1.png">
+
+<img width="1715" alt="Screenshot 2023-04-13 at 10 27 29 AM" src="https://user-images.githubusercontent.com/112721395/231792449-d329dac9-f43b-4070-9a20-3d31bb1e61e5.png">
+<img width="348" alt="map-2" src="https://user-images.githubusercontent.com/112721395/231792226-e3f07f99-3af7-4e27-8052-1f88dc7af4ae.png">
+<img width="684" alt="map-3" src="https://user-images.githubusercontent.com/112721395/231792214-77acd896-371b-4daf-aee4-8d028bec2150.png">
+<img width="430" alt="map-4" src="https://user-images.githubusercontent.com/112721395/231792163-b735db51-1e92-4ab4-aeed-0e3da4093ef0.png">
+
+
+
